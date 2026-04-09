@@ -1,0 +1,18 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { margin: 0; padding: 0; background: transparent; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;}
+
+.response-container { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; width: 620px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 16px;}
+.drag { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+.header { display: flex; justify-content: space-between; align-items: center; }
+.left-section { display: flex; align-items: center; gap: 8px; }
+.logo { width: 18px; height: 18px; object-fit: contain; }
+.title { color: #ffffff; font-weight: 700; font-size: 14px; }
+
+.right-section { display: flex; align-items: center; gap: 12px; }
+.icon-btn { background: none; border: none; color: #a1a1aa; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
+.icon-btn:hover { color: #ffffff; }
+.icon-btn svg { width: 16px; height: 16px; }
+
+.content { color: #ffffff; font-weight: 500; font-size: 15px; line-height: 1.5; padding-bottom: 4px; }

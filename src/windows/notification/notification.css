@@ -1,0 +1,18 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { margin: 0; padding: 0; background: transparent; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; align-items: flex-start; justify-content: flex-end; padding: 8px; height: 100vh;}
+
+.notification-box { background: linear-gradient(180deg, #1a1a1f 0%, #151517 100%); border: 1px solid #3c3c47; border-radius: 16px; width: 330px; padding: 12px 14px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; min-height: 50px; height: auto;}
+
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.drag { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+.title { color: #8e8e93; font-weight: 600; font-size: 13px; letter-spacing: 0.5px; }
+
+.close-btn { background: none; border: none; color: #8e8e93; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; transition: all 0.2s; }
+.close-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.close-btn svg { width: 14px; height: 14px; }
+
+.content { color: #ffffff; font-size: 14px; font-weight: 500; line-height: 1.5; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+.key { background: #2c2c37; padding: 2px 6px; border-radius: 6px; font-size: 11px; font-weight: 600; border: none; }

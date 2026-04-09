@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="notification.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="notification-box">
+    <div class="header drag">
+      <div class="title">Shortcuts</div>
+      <button id="close-btn" class="close-btn no-drag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="content drag">
+      Press <span class="key">Alt</span> <span class="key">T</span> to bring Cluely back at any time.
+    </div>
+  </div>
+  <script src="notification_renderer.js"></script>
+</body>
+</html>

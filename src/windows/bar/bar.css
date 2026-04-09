@@ -1,0 +1,25 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { margin: 0; padding: 0; background: transparent; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; }
+
+.bar-container { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); border-radius: 999px; height: 48px; display: inline-flex; padding: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;}
+.content { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100%;}
+.drag { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+.logo { width: 20px; height: 20px; margin-left: 12px; margin-right: 12px; object-fit: contain; }
+
+.btn { display: flex; align-items: center; gap: 8px; border: none; font-size: 14px; font-weight: 500; border-radius: 999px; cursor: pointer; transition: all 0.2s ease; height: 100%; padding: 0 16px; color: #fff;}
+.blue-btn { background: #032655;  }
+.blue-btn:hover { background: #04367a; }
+
+.transparent-btn { background: transparent; color: #cccccc; }
+.transparent-btn:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
+.text-icon { font-family: serif; font-size: 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 2px; padding: 0 4px; line-height: 14px; }
+
+.icon-btn { background: transparent; border: none; color: #ccc; display: flex; align-items: center; justify-content: center; width: 32px; height: 100%; cursor: pointer; border-radius: 50%; transition: color 0.2s; }
+.icon-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+.divider { width: 1px; height: 60%; background: rgba(255, 255, 255, 0.15); margin: 0 8px; }
+
+.drag-handle { display: flex; align-items: center; justify-content: center; color: #aaa; width: 32px; height: 100%; cursor: grab; padding-right: 8px;}
+.drag-handle:active { cursor: grabbing; }
