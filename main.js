@@ -5,6 +5,7 @@ let mainWindow
 let barWindow
 let notificationWindow
 let responseWindow
+let askWindow
 
 function createWindows() {
   const primaryDisplay = screen.getPrimaryDisplay()
@@ -45,7 +46,29 @@ function createWindows() {
   })
   barWindow.loadFile('src/windows/bar/bar.html')
 
-  // 3. Notification Window (Hidden initially)
+  // 3. Ask Window (Hidden initially)
+  askWindow = new BrowserWindow({
+    width: 700,
+    height: 60,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    hasShadow: false,
+    resizable: false,
+    show: false,
+    icon: path.join(__dirname, 'icon.ico'),
+    skipTaskbar: true,
+    x: Math.floor(x + width / 2 - 350),
+    y: Math.floor(y + height - 50),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  })
+  askWindow.loadFile('src/windows/ask/ask.html')
+
+  // 4. Notification Window (Hidden initially)
   notificationWindow = new BrowserWindow({
     width: 380,
     height: 110,
@@ -140,11 +163,30 @@ ipcMain.on('show-bar', () => {
 })
 
 ipcMain.on('ask-question', () => {
+  if (askWindow && barWindow) {
+    const barBounds = barWindow.getBounds()
+    askWindow.setBounds({
+      x: Math.floor(barBounds.x + (barBounds.width / 2) - 350),
+      y: barBounds.y + barBounds.height + 10,
+      width: 700,
+      height: 60
+    })
+    askWindow.show()
+    askWindow.focus()
+  }
+})
+
+ipcMain.on('submit-question', (event, text) => {
+  if (askWindow) askWindow.hide()
   if (responseWindow) {
     // Show center screen
     responseWindow.center()
     responseWindow.show()
   }
+})
+
+ipcMain.on('hide-ask', () => {
+  if (askWindow) askWindow.hide()
 })
 
 ipcMain.on('hide-notification', () => {
