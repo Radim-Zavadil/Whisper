@@ -1,4 +1,6 @@
-const { app, BrowserWindow, ipcMain, globalShortcut, screen } = require('electron')
+require('dotenv').config()
+
+const { app, BrowserWindow, ipcMain, globalShortcut, screen, desktopCapturer } = require('electron')
 const path = require('path')
 
 let mainWindow
@@ -90,10 +92,10 @@ function createWindows() {
   })
   notificationWindow.loadFile('src/windows/notification/notification.html')
 
-  // 4. Response Window (Hidden initially)
+  // 5. Response Window (Hidden initially) — taller to fit answer text
   responseWindow = new BrowserWindow({
     width: 650,
-    height: 140,
+    height: 380,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -116,7 +118,6 @@ function createWindows() {
     if (barWindow.isVisible()) {
       barWindow.hide()
       notificationWindow.show()
-      // Auto hide notification after 5 seconds
       setTimeout(() => {
         if (notificationWindow && notificationWindow.isVisible()) {
           notificationWindow.hide()
@@ -145,7 +146,79 @@ app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
 
-// IPC Handlers
+// ─── Screen Capture ───────────────────────────────────────────────────────────
+ipcMain.handle('capture-screen', async () => {
+  const sources = await desktopCapturer.getSources({
+    types: ['screen'],
+    thumbnailSize: { width: 1920, height: 1080 }
+  })
+  return sources[0].thumbnail.toPNG().toString('base64')
+})
+
+// ─── Gemini Vision API ────────────────────────────────────────────────────────
+async function callGemini(base64Image, apiKey) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+  const body = {
+    contents: [{
+      parts: [
+        {
+          inline_data: {
+            mime_type: 'image/png',
+            data: base64Image
+          }
+        },
+        {
+          text: 'Describe what is on this screen. If there is an error, extract the exact error text and which app it is from. If it is a cloud dashboard, design tool, or terminal, say so. Be concise, max 3 sentences.'
+        }
+      ]
+    }]
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+
+  const data = await res.json()
+  if (!res.ok) {
+    throw new Error(data.error?.message || `Gemini error ${res.status}`)
+  }
+  return data.candidates[0].content.parts[0].text
+}
+
+// ─── Groq Llama 4 API ─────────────────────────────────────────────────────────
+async function callGroq(screenContext, userQuestion, apiKey) {
+  const url = 'https://api.groq.com/openai/v1/chat/completions'
+  const body = {
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+    max_tokens: 1000,
+    temperature: 0.3,
+    messages: [
+      {
+        role: 'user',
+        content: `Screen context: ${screenContext}\n\nUser question: ${userQuestion}\n\nYou are a developer assistant. Answer the user's question directly. The screen context is provided in case the question implies it (e.g. asking about a visible error), but if the question is general or unrelated to the screen, feel free to ignore the screen context. Give a precise, actionable answer. If a fix requires a terminal command or code, put it in a markdown code block. Be direct. Max 150 words.`
+      }
+    ]
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+
+  const data = await res.json()
+  if (!res.ok) {
+    throw new Error(data.error?.message || `Groq error ${res.status}`)
+  }
+  return data.choices[0].message.content
+}
+
+// ─── IPC Handlers ─────────────────────────────────────────────────────────────
 ipcMain.on('hide-bar', () => {
   if (barWindow) barWindow.hide()
   if (notificationWindow) {
@@ -176,12 +249,39 @@ ipcMain.on('ask-question', () => {
   }
 })
 
-ipcMain.on('submit-question', (event, text) => {
+ipcMain.on('submit-question', async (event, text) => {
   if (askWindow) askWindow.hide()
+
   if (responseWindow) {
-    // Show center screen
     responseWindow.center()
     responseWindow.show()
+    responseWindow.webContents.send('answer-loading')
+  }
+
+  try {
+    // 1. Capture screen
+    const sources = await desktopCapturer.getSources({
+      types: ['screen'],
+      thumbnailSize: { width: 1920, height: 1080 }
+    })
+    const base64Screenshot = sources[0].thumbnail.toPNG().toString('base64')
+
+    // 2. Gemini Vision — understand the screen
+    const geminiResponse = await callGemini(base64Screenshot, process.env.GEMINI_API_KEY)
+
+    // 3. Groq Llama 4 — generate the answer
+    const answer = await callGroq(geminiResponse, text, process.env.GROQ_API_KEY)
+
+    if (responseWindow) {
+      responseWindow.webContents.send('answer', { text: answer, error: false })
+    }
+  } catch (err) {
+    const msg = err.message || 'Something went wrong. Please try again.'
+    if (responseWindow) {
+      responseWindow.webContents.send('answer', { text: msg, error: true })
+    }
+  } finally {
+    if (askWindow) askWindow.webContents.send('answer-done')
   }
 })
 

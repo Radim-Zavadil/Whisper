@@ -10,5 +10,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   hideResponse: () => ipcRenderer.send('hide-response'),
   windowMinimize: () => ipcRenderer.send('window-minimize'),
   windowMaximize: () => ipcRenderer.send('window-maximize'),
-  windowClose: () => ipcRenderer.send('window-close')
+  windowClose: () => ipcRenderer.send('window-close'),
+
+  onAnswerLoading: (callback) => ipcRenderer.on('answer-loading', () => callback()),
+  onAnswer: (callback) => ipcRenderer.on('answer', (_event, data) => callback(data)),
+  onAnswerDone: (callback) => ipcRenderer.on('answer-done', () => callback())
 })
