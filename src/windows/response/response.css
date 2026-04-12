@@ -1,18 +1,24 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { margin: 0; padding: 0; background: transparent; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;}
 
-.response-container { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; width: 620px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 16px;}
+.response-container { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; width: 620px; max-height: 480px; padding: 16px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 16px; overflow: hidden;}
 .drag { -webkit-app-region: drag; }
 .no-drag { -webkit-app-region: no-drag; }
 
-.header { display: flex; justify-content: space-between; align-items: center; }
+.header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .left-section { display: flex; align-items: center; gap: 8px; }
 .logo { width: 18px; height: 18px; object-fit: contain; }
-.title { color: #ffffff; font-weight: 700; font-size: 14px; }
+.title { color: #ffffff; font-weight: 700; font-size: 14px; opacity: 0.9; }
 
 .right-section { display: flex; align-items: center; gap: 12px; }
-.icon-btn { background: none; border: none; color: #a1a1aa; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
-.icon-btn:hover { color: #ffffff; }
+.icon-btn { background: none; border: none; color: #a1a1aa; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 4px; border-radius: 4px; }
+.icon-btn:hover { color: #ffffff; background: rgba(255,255,255,0.1); }
 .icon-btn svg { width: 16px; height: 16px; }
 
-.content { color: #ffffff; font-weight: 500; font-size: 15px; line-height: 1.5; padding-bottom: 4px; }
+.content { color: #ffffff; font-weight: 500; font-size: 14.5px; line-height: 1.6; overflow-y: auto; padding-right: 8px; flex: 1; margin-right: -8px; }
+
+/* Custom Scrollbar */
+.content::-webkit-scrollbar { width: 5px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+.content::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
