@@ -12,7 +12,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   windowMaximize: () => ipcRenderer.send('window-maximize'),
   windowClose: () => ipcRenderer.send('window-close'),
 
-  onAnswerLoading: (callback) => ipcRenderer.on('answer-loading', () => callback()),
+  onAnswerLoading: (callback) => ipcRenderer.on('answer-loading', (_event, message) => callback(message)),
   onAnswer: (callback) => ipcRenderer.on('answer', (_event, data) => callback(data)),
-  onAnswerDone: (callback) => ipcRenderer.on('answer-done', () => callback())
+  onAnswerDone: (callback) => ipcRenderer.on('answer-done', () => callback()),
+  
+  getActivity: () => ipcRenderer.invoke('get-activity'),
+  searchActivity: (query) => ipcRenderer.invoke('search-activity', query)
 })

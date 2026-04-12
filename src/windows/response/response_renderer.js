@@ -16,9 +16,10 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.electronAPI && window.electronAPI.onAnswerLoading) {
-    window.electronAPI.onAnswerLoading(() => {
+    window.electronAPI.onAnswerLoading((message) => {
       const contentEl = document.querySelector('.content');
-      contentEl.innerHTML = '<span style="color:#a1a1aa; font-style: italic;">Analyzing screen...</span>';
+      const displayMsg = message || 'Analyzing screen...';
+      contentEl.innerHTML = `<span style="color:#a1a1aa; font-style: italic;">${displayMsg}</span>`;
       lastCodeBlock = '';
     });
   }

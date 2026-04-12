@@ -4,14 +4,17 @@
   "description": "Cluely App",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-rebuild"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@electron/rebuild": "^3.7.2",
     "electron": "^29.0.0"
   },
   "dependencies": {
+    "better-sqlite3": "^12.8.0",
     "dotenv": "^17.4.1"
   }
 }

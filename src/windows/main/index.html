@@ -32,8 +32,7 @@
     </div>
     
     <div class="search-container">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" placeholder="Search or ask anything..." class="search-input" />
+      <input type="text" id="search-input" placeholder="Search or ask anything..." class="search-input" />
       <span class="search-shortcut">Ctrl  K</span>
     </div>
 
@@ -62,33 +61,33 @@
         </div>
       </div>
 
-      <div class="activity-list">
-        <div class="activity-date">Today</div>
-        
-        <div class="activity-item">
-          <div class="item-title">Mock Interview and Cluely AI Tool Review</div>
-          <div class="item-meta">
-            <span class="time-rect">2:42</span>
-            <span class="uses-badge">6 uses</span>
-          </div>
-          <div class="item-time">11:07am</div>
-        </div>
-
-        <div class="activity-date" style="margin-top: 24px;">Fri, Sep 19</div>
-        
-        <div class="activity-item">
-          <div class="item-title">N PM Discussion</div>
-          <div class="item-meta">
-            <span class="time-rect">1:19:37</span>
-            <span class="uses-badge">27 uses</span>
-          </div>
-          <div class="item-actions">
-            <svg class="dots-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
-          </div>
-        </div>
+      <div class="activity-list" id="activity-list">
+        <!-- Dynamic content will be injected here -->
       </div>
     </section>
   </main>
+
+  <div id="history-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title-container">
+          <img src="../../../icon_black.png" class="modal-logo" />
+          <span class="modal-title">Activity Details</span>
+        </div>
+        <button id="close-modal-btn" class="close-btn-modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="chat-container">
+        <div class="chat-message user-msg">
+          <div class="bubble" id="modal-question"></div>
+        </div>
+        <div class="chat-message ai-msg">
+          <div class="bubble" id="modal-answer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="renderer.js"></script>
 </body>
