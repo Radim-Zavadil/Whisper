@@ -23,3 +23,12 @@ body { margin: 0; padding: 0; background: transparent; overflow: hidden; font-fa
 
 .drag-handle { display: flex; align-items: center; justify-content: center; color: #aaa; width: 32px; height: 100%; cursor: grab; padding-right: 8px;}
 .drag-handle:active { cursor: grabbing; }
+
+/* Listening active state */
+.blue-btn.listening { background: #7f1d1d; animation: pulse-rec 1.4s ease-in-out infinite; }
+.blue-btn.listening:hover { background: #991b1b; }
+@keyframes pulse-rec {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
